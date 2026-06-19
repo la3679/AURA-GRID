@@ -1,0 +1,22 @@
+{
+  "name": "@aura-grid/game-engine",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "tsc --noEmit -p tsconfig.json",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@aura-grid/shared": "*"
+  },
+  "devDependencies": {
+    "vitest": "^2.1.8"
+  }
+}

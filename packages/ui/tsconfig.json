@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "jsx": "react-jsx",
+    "types": ["react", "react-dom"],
+    "baseUrl": ".",
+    "paths": {
+      "@aura-grid/shared": ["../shared/src/index.ts"]
+    }
+  },
+  "include": ["src"]
+}
