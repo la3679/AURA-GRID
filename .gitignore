@@ -4,5 +4,26 @@ dist/
 coverage/
 .DS_Store
 *.log
-.env*
+
+# Environment & secrets — never commit
+.env
+.env.*
 !.env.example
+**/.env
+**/.env.local
+**/.env.*.local
+
+# Firebase Admin service account / private keys
+**/serviceAccount*.json
+**/firebase-adminsdk*.json
+*.pem
+
+# Test / build artifacts
+playwright-report/
+test-results/
+.vite/
+*.tsbuildinfo
+
+# Editor
+.vscode/
+.idea/
