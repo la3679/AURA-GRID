@@ -1,0 +1,45 @@
+{
+  "name": "@aura-grid/web",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 3000 --host 0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview --port 3000",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@aura-grid/game-engine": "*",
+    "@aura-grid/shared": "*",
+    "@aura-grid/ui": "*",
+    "@tanstack/react-query": "^5.62.0",
+    "clsx": "^2.1.1",
+    "firebase": "^11.1.0",
+    "lucide-react": "^0.546.0",
+    "motion": "^12.23.24",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router-dom": "^7.1.1",
+    "tailwind-merge": "^3.5.0",
+    "zustand": "^5.0.12"
+  },
+  "optionalDependencies": {
+    "@tailwindcss/oxide-win32-x64-msvc": "^4.1.14",
+    "lightningcss-win32-x64-msvc": "^1.30.2"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.1.14",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
+    "@testing-library/user-event": "^14.5.2",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@vitejs/plugin-react": "^5.0.4",
+    "jsdom": "^25.0.1",
+    "tailwindcss": "^4.1.14",
+    "vite": "^6.2.0",
+    "vitest": "^2.1.8"
+  }
+}

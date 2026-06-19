@@ -1,0 +1,101 @@
+@import 'tailwindcss';
+
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@theme {
+  --font-display: 'Space Grotesk', system-ui, sans-serif;
+  --font-sans: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+}
+
+/* Dark theme (default) */
+:root,
+.dark {
+  --background: #06080f;
+  --foreground: #e6f1ff;
+  --card: #0c1019;
+  --card-foreground: #e6f1ff;
+  --primary: #00f3ff;
+  --primary-foreground: #04121a;
+  --secondary: #161c2b;
+  --muted: #131927;
+  --muted-foreground: #8593ad;
+  --accent: #a855f7;
+  --danger: #ef4444;
+  --success: #22c55e;
+  --warning: #eab308;
+  --border: #1c2436;
+  --ring: #00f3ff;
+}
+
+/* Light theme */
+.light {
+  --background: #f5f7fb;
+  --foreground: #0c1019;
+  --card: #ffffff;
+  --card-foreground: #0c1019;
+  --primary: #0072ff;
+  --primary-foreground: #ffffff;
+  --secondary: #e6ebf5;
+  --muted: #eef2f9;
+  --muted-foreground: #5a6781;
+  --accent: #7c3aed;
+  --danger: #dc2626;
+  --success: #16a34a;
+  --warning: #d97706;
+  --border: #d8e0ee;
+  --ring: #0072ff;
+}
+
+* {
+  border-color: var(--border);
+}
+
+html {
+  background-color: var(--background);
+  color-scheme: dark;
+}
+
+.light html,
+html.light {
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background-color: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+/* Subtle animated grid background used on landing/hero. */
+.aura-grid-bg {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--primary) 8%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--primary) 8%, transparent) 1px, transparent 1px);
+  background-size: 44px 44px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+}
