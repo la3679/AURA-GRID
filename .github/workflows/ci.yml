@@ -16,7 +16,10 @@ jobs:
         with:
           node-version: 20
           cache: npm
-      - run: npm ci
+        # Use `npm install` (not `npm ci`): a Windows-generated lockfile omits the
+        # resolved package entries for Linux-only optional binaries (rollup/esbuild),
+        # which npm ci cannot install. npm install re-resolves them for the runner.
+      - run: npm install --no-audit --no-fund
       - run: npm run typecheck
       - run: npm run lint
 
@@ -29,7 +32,10 @@ jobs:
         with:
           node-version: 20
           cache: npm
-      - run: npm ci
+        # Use `npm install` (not `npm ci`): a Windows-generated lockfile omits the
+        # resolved package entries for Linux-only optional binaries (rollup/esbuild),
+        # which npm ci cannot install. npm install re-resolves them for the runner.
+      - run: npm install --no-audit --no-fund
       - run: npm run test
       - run: npm run test:coverage --if-present
         continue-on-error: true
@@ -44,5 +50,8 @@ jobs:
         with:
           node-version: 20
           cache: npm
-      - run: npm ci
+        # Use `npm install` (not `npm ci`): a Windows-generated lockfile omits the
+        # resolved package entries for Linux-only optional binaries (rollup/esbuild),
+        # which npm ci cannot install. npm install re-resolves them for the runner.
+      - run: npm install --no-audit --no-fund
       - run: npm run build
