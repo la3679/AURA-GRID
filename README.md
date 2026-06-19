@@ -1,67 +1,126 @@
-# SPLIT // AURA-GRID
+# AURA-GRID // SPLIT
 
-A high-stakes, combinatorial strategy game set in a futuristic neural-link environment. Navigate the grid, partition your processing power, and dominate the opponent through precise mathematical allocation.
+> Split the signal. Control the lanes.
 
-## 🔗 The Core Concept
+A futuristic strategic lane-based board game platform. Partition each numeric roll
+across six tactical lanes, race to complete lanes, bump opponents off their
+progress, and capture the grid. AURA-GRID is a SaaS/game hybrid: a polished landing
+experience, Firebase auth, a player dashboard, a redesigned game, a leaderboard, and
+Gemini-powered AI commentary — all backed by a secure API and a fully tested,
+framework-agnostic game engine.
 
-SPLIT is a tactical race across six parallel data lanes. Players must take a single numeric input (the "Roll") and split its value across different lanes to advance their markers. The game is won not just by luck, but by how efficiently you divide your resources and how aggressively you disrupt your opponent.
+## Screenshots
 
-## 🕹️ System Protocols (How to Play)
+> _Placeholders — add captures after running locally._
+>
+> - `docs/screenshots/landing.png`
+> - `docs/screenshots/dashboard.png`
+> - `docs/screenshots/game.png`
 
-1.  **Initialize**: Choose your character class (**TITAN**, **WRAITH**, or **PRISM**) and synchronize your neural link.
-2.  **The Roll**: On your turn, a value from 1 to 6 is generated.
-3.  **The Partition**: You must split this value into parts that sum up exactly to the total roll. 
-    - Each lane has a specific **Activation Value** (L1, L2, L3, L4, L5, L6).
-    - To move in a lane, you must allocate its value from your roll.
-    - *Example*: If you roll a 6, you could move L6 once, or L1 six times, or L4 once plus L2 once.
-4.  **Neural Interference (Bumping)**: If your marker lands on the *exact same position* as your opponent's marker in a lane, their marker is **PURGED** and reset to position 0.
-5.  **Synchronization (Winning)**: The first player to fully synchronize (reach the final step) in **any 3 lanes** secures victory and shuts down the grid.
+## Features
 
-### Lane Architecture
-| Lane | Value (Cost) | Max Steps |
-| :--- | :--- | :--- |
-| **L1** | 1 | 10 |
-| **L2** | 2 | 6 |
-| **L3** | 3 | 4 |
-| **L4** | 4 | 3 |
-| **L5** | 5 | 3 |
-| **L6** | 6 | 2 |
+- **Original branding** — in-code SVG logo, intro boot loader, animated explainer (with MP4 fallback).
+- **Auth** — Firebase email/password, signup with class + aura color, forgot password, **guest mode**.
+- **Game** — redesigned board, move planner with live validation, AI commentary, strategy hints, victory debrief.
+- **Dashboard** — level/XP, win rate, streaks, lanes, bumps, recent matches, AI insight, daily directive.
+- **Profile & Settings** — edit identity, theme (dark/light/system), motion/sound/commentary, data export.
+- **Leaderboard & match history** — ranked operatives, match detail with final board + AI summary.
+- **AI (Gemini)** — commentary, match summaries, strategy tips — **backend-only**, cached, with safe fallbacks.
+- **Quality** — TypeScript strict, unit/component/API tests, E2E, CI, accessibility, responsive, theming.
 
-## 🛠️ Technological Stack
+## Tech Stack
 
--   **Frontend**: React 18 + Vite
--   **Styling**: Tailwind CSS (Neo-Noir / Cyberpunk aesthetic)
--   **Animation**: Motion (Framer Motion) for fluid state transitions.
--   **State Management**: Zustand (Engine Logic)
--   **Neural Commentary**: Integrated Gemini-3 Flash Engine for real-time cynical AI commentary.
+| Layer | Tech |
+| --- | --- |
+| Frontend | React 19, TypeScript, Vite, Tailwind v4, React Router, Zustand, TanStack Query, Motion, lucide-react, Firebase client |
+| Backend | Node, Express, TypeScript, Firebase Admin, `@google/genai`, Zod, Helmet, CORS, rate-limiting |
+| Shared | `@aura-grid/shared` (types/schemas/constants), `@aura-grid/game-engine` (pure rules), `@aura-grid/ui` (components) |
+| Tooling | npm workspaces, ESLint, Prettier, Vitest, Testing Library, Supertest, Playwright |
 
-## 🚀 Deployment
+## Architecture Overview
 
-### Prerequisites
-- Node.js 18+
-- npm / yarn
+npm-workspaces monorepo:
 
-### Installation
+```
+apps/web   → React client (no secrets; calls /api/*, never Gemini directly)
+apps/api   → Express server (owns Firebase Admin, Gemini, cache, all secrets)
+packages/game-engine → pure, deterministic, tested game logic (no React)
+packages/shared      → types, Zod schemas, constants
+packages/ui          → presentational components
+```
+
+See [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
+## Local Setup
+
 ```bash
 npm install
+cp .env.example apps/web/.env.local   # fill VITE_* (Firebase web config)
+cp .env.example apps/api/.env         # fill backend secrets (Gemini, Firebase Admin)
+npm run dev                            # web on :3000, api on :4000
 ```
 
-### Development
+The app runs **without credentials**: play guest matches and the API serves safe AI
+fallbacks. Add Firebase to enable accounts; add Gemini to enable live AI.
+
+### Environment Variables
+
+See [.env.example](.env.example). Only `VITE_*` values reach the browser. Gemini and
+Firebase Admin credentials are **backend-only**.
+
+- Firebase setup → [docs/FIREBASE_SETUP.md](docs/FIREBASE_SETUP.md)
+- Gemini setup → [docs/GEMINI_SETUP.md](docs/GEMINI_SETUP.md)
+
+## Running
+
 ```bash
-npm run dev
+npm run dev        # both apps
+npm run dev:web    # frontend only
+npm run dev:api    # backend only
+npm run build      # typecheck + build web (api runs via tsx)
+npm run start:api  # run the API
 ```
 
-### Production Build
+## Testing
+
 ```bash
-npm run build
+npm run test           # unit + component + API (Vitest)
+npm run test:coverage  # with coverage
+npm run test:e2e       # Playwright (run `npx playwright install` first)
 ```
 
-## 🖥️ User Interface Features
+See [docs/TESTING.md](docs/TESTING.md).
 
--   **Process Logs**: Real-time event stream tracking every move and system event.
--   **Combinatorial Controller**: Interactive interface for calculating and executing valid splits.
--   **Synesthetic HUD**: Visual feedback system using glow effects and chromatic aberration to signify grid stability.
--   **Neural Link**: Integrated match-making with the **EXO_ECHO** AI opponent.
+## Git Workflow
+
+Branches: `main` → `dev` → `test`, plus `feature/* fix/* chore/* release/* hotfix/*`.
+Conventional Commits, PR into `dev`, CI must pass. See [docs/GIT_WORKFLOW.md](docs/GIT_WORKFLOW.md).
+
+## Deployment
+
+Two documented paths (split hosting or Firebase). See [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
+
+## Troubleshooting
+
+- **`Cannot find module '../lightningcss.*.node'`** on Windows: a native optional dep
+  failed to install. Run `npm install lightningcss-win32-x64-msvc @tailwindcss/oxide-win32-x64-msvc`.
+- **AI returns fallback text**: Gemini key missing/invalid — this is expected and safe.
+- **Login fails / "Profile service unavailable"**: Firebase not configured — use guest mode.
+
+## Security Notes
+
+- No secrets in the frontend. Gemini + Firebase Admin are backend-only.
+- All API inputs validated with Zod; AI endpoints rate-limited.
+- Firebase ID tokens verified server-side; the trusted UID comes from the token only.
+- `.env*` and service-account files are git-ignored.
+
+## Roadmap
+
+- Online multiplayer (planned, not faked).
+- Firebase Storage avatars.
+- Friends / weekly leaderboard filters.
+- Daily challenge generation via Gemini.
 
 ---
+
 **TERMINAL ACCESS GRANTED. GOOD LUCK ON THE GRID.**
